@@ -2,6 +2,7 @@ package com.example.tporepaso1.ui.Musica;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,17 +23,43 @@ public class MusicaFragment extends Fragment {
         return new MusicaFragment();
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_musica, container, false);
-    }
+
+
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Inicializar el ViewModel
         mViewModel = new ViewModelProvider(this).get(MusicaViewModel.class);
-        // TODO: Use the ViewModel
+        mViewModel.setContexto(MusicaFragment.newInstance().getContext());
     }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_musica, container, false);
+
+        // Configurar el botón "Play"
+        rootView.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.reroducir();
+            }
+        });
+
+        // Configurar el botón "Stop"
+        rootView.findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.stopService();
+            }
+        });
+
+        return rootView;
+    }
+}
+
+
 
 }
